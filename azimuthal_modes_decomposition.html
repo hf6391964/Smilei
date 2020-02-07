@@ -1,0 +1,791 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Azimuthal modes decomposition &#8212; Smilei b&#39;v4.3-98-g4bee4371\n&#39; documentation</title>
+    <link rel="stylesheet" href="_static/smilei_theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://www.gitcdn.xyz/cdn/mathjax/MathJax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="_static/smileiIcon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Use" href="use.html" />
+    <link rel="prev" title="Field initialization for relativistic species" href="relativistic_fields_initialization.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      scale: 95,
+      availableFonts: ["TeX"]
+    }
+  });
+  </script>
+   
+  </head><body>
+
+<div id="smallScreenMenu" class="off">
+
+    
+    <div class="toctree-smilei">
+        <ul>
+                <li class="outer">
+                    <a href="licence.html">Licence</a>
+                </li>
+                <li class="outer">
+                    <a href="synopsis.html">Synopsis</a>
+                </li>
+                <li class="outer">
+                    <a href="highlights.html">Highlights</a>
+                </li>
+                <li class="outer">
+                    <a href="releases.html">Releases</a>
+                </li>
+        </ul>
+        <hr />
+        <ul>
+                <li class="outer">
+                    <a href="units.html">Units</a>
+                </li>
+                <li class="outer">
+                    <a href="algorithms.html">PIC algorithms</a>
+                </li>
+                <li class="outer">
+                    <a href="parallelization.html">Parallelization basics</a>
+                </li>
+                <li class="outer">
+                    <a href="vectorization.html">Vectorization</a>
+                </li>
+                <li class="outer">
+                    <a href="collisions.html">Binary collisions</a>
+                </li>
+                <li class="outer">
+                    <a href="ionization.html">Ionization</a>
+                </li>
+                <li class="outer">
+                    <a href="radiation_loss.html">Synchrotron-like radiation reaction</a>
+                </li>
+                <li class="outer">
+                    <a href="multiphoton_Breit_Wheeler.html">Multiphoton Breit-Wheeler pair creation</a>
+                </li>
+                <li class="outer">
+                    <a href="particle_merging.html">Particle Merging</a>
+                </li>
+                <li class="outer">
+                    <a href="particle_injector.html">Particle Injector</a>
+                </li>
+                <li class="outer">
+                    <a href="laser_envelope.html">Laser envelope model</a>
+                </li>
+                <li class="outer">
+                    <a href="relativistic_fields_initialization.html">Field initialization for relativistic species</a>
+                </li>
+            </ul>
+                <ul>
+<li><a class="reference internal" href="#">Azimuthal modes decomposition</a><ul>
+<li><a class="reference internal" href="#mathematical-definition">Mathematical definition</a></li>
+<li><a class="reference internal" href="#decomposition-of-vector-fields">Decomposition of vector fields</a></li>
+<li><a class="reference internal" href="#maxwell-s-equations-in-cylindrical-geometry">Maxwell’s equations in cylindrical geometry</a></li>
+<li><a class="reference internal" href="#interaction-with-the-macro-particles">Interaction with the macro-particles</a></li>
+<li><a class="reference internal" href="#tips">Tips</a></li>
+<li><a class="reference internal" href="#conventions-for-the-namelist">Conventions for the namelist</a></li>
+<li><a class="reference internal" href="#classical-and-relativistic-poisson-s-equation">Classical and relativistic Poisson’s equation</a></li>
+<li><a class="reference internal" href="#the-envelope-model-in-cylindrical-coordinates">The envelope model in cylindrical coordinates</a></li>
+</ul>
+</li>
+</ul>
+
+            <ul>
+        </ul>
+        <hr />
+        <ul>
+                <li class="outer">
+                    <a href="installation.html">Install</a>
+                </li>
+                <li class="outer">
+                    <a href="namelist.html">Write a namelist</a>
+                </li>
+                <li class="outer">
+                    <a href="run.html">Run</a>
+                </li>
+                <li class="outer">
+                    <a href="post-processing.html">Post-process</a>
+                </li>
+                <li class="outer">
+                    <a href="contribute.html">Contribute</a>
+                </li>
+        </ul>
+        <hr />
+        <ul>
+                <li class="outer">
+                    <a href="material.html">Publications</a>
+                </li>
+                <li class="outer">
+                    <a href="partners.html">Partners</a>
+                </li>
+                <li class="outer">
+                    <a href="https://smileipic.github.io/tutorials">Smilei tutorials</a>
+                </li>
+        </ul>
+        <hr />
+    </div>
+
+</div>
+<div id="hcontainer">
+    <div id="nav_positioner">
+        <div id="nav">
+            <div id="nav_button" onclick="toggleNav()">
+                Sections
+            </div>
+            <div id="nav_list" class="toctree-smilei">
+                <div id="nav_title"><a href="#">Azimuthal modes decomposition</a></div>
+                <ul>
+<li><a class="reference internal" href="#">Azimuthal modes decomposition</a><ul>
+<li><a class="reference internal" href="#mathematical-definition">Mathematical definition</a></li>
+<li><a class="reference internal" href="#decomposition-of-vector-fields">Decomposition of vector fields</a></li>
+<li><a class="reference internal" href="#maxwell-s-equations-in-cylindrical-geometry">Maxwell’s equations in cylindrical geometry</a></li>
+<li><a class="reference internal" href="#interaction-with-the-macro-particles">Interaction with the macro-particles</a></li>
+<li><a class="reference internal" href="#tips">Tips</a></li>
+<li><a class="reference internal" href="#conventions-for-the-namelist">Conventions for the namelist</a></li>
+<li><a class="reference internal" href="#classical-and-relativistic-poisson-s-equation">Classical and relativistic Poisson’s equation</a></li>
+<li><a class="reference internal" href="#the-envelope-model-in-cylindrical-coordinates">The envelope model in cylindrical coordinates</a></li>
+</ul>
+</li>
+</ul>
+
+            </div>
+        </div>
+    </div>
+    
+    <div class="headercolor">
+    </div>
+    <div class="hpositioner">
+        <div class="header">
+        <div class="logo">
+            <a href="index.html">
+                <img class="logo" src="_static/smileiLogo.svg" alt="Logo" />
+            </a>
+        </div>
+        <div class="menu"
+            id="menu_Overview"
+            
+        >
+            <div id="menuButton_Overview" class="menuButton"
+                 onmouseenter="prepareMenu('menu_Overview')"
+                 onmousedown="event.preventDefault()"
+            >
+                <a href="overview.html">
+                    <span>Overview</span>
+                </a>
+            </div>
+            <div class="off" onmouseleave="leaveMenu('menu_Overview',this)">
+                <div class="toctree-smilei">
+                    <ul>
+                        <li class="outer">
+                            <a href="licence.html">Licence</a>
+                        </li>
+                        <li class="outer">
+                            <a href="synopsis.html">Synopsis</a>
+                        </li>
+                        <li class="outer">
+                            <a href="highlights.html">Highlights</a>
+                        </li>
+                        <li class="outer">
+                            <a href="releases.html">Releases</a>
+                        </li>
+        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="menu"
+            id="menu_Understand"
+            style="font-weight:bold"
+        >
+            <div id="menuButton_Understand" class="menuButton"
+                 onmouseenter="prepareMenu('menu_Understand')"
+                 onmousedown="event.preventDefault()"
+            >
+                <a href="understand.html">
+                    <span>Understand</span>
+                </a>
+            </div>
+            <div class="off" onmouseleave="leaveMenu('menu_Understand',this)">
+                <div class="toctree-smilei">
+                    <ul>
+                        <li class="outer">
+                            <a href="units.html">Units</a>
+                        </li>
+                        <li class="outer">
+                            <a href="algorithms.html">PIC algorithms</a>
+                        </li>
+                        <li class="outer">
+                            <a href="parallelization.html">Parallelization basics</a>
+                        </li>
+                        <li class="outer">
+                            <a href="vectorization.html">Vectorization</a>
+                        </li>
+                        <li class="outer">
+                            <a href="collisions.html">Binary collisions</a>
+                        </li>
+                        <li class="outer">
+                            <a href="ionization.html">Ionization</a>
+                        </li>
+                        <li class="outer">
+                            <a href="radiation_loss.html">Synchrotron-like radiation reaction</a>
+                        </li>
+                        <li class="outer">
+                            <a href="multiphoton_Breit_Wheeler.html">Multiphoton Breit-Wheeler pair creation</a>
+                        </li>
+                        <li class="outer">
+                            <a href="particle_merging.html">Particle Merging</a>
+                        </li>
+                        <li class="outer">
+                            <a href="particle_injector.html">Particle Injector</a>
+                        </li>
+                        <li class="outer">
+                            <a href="laser_envelope.html">Laser envelope model</a>
+                        </li>
+                        <li class="outer">
+                            <a href="relativistic_fields_initialization.html">Field initialization for relativistic species</a>
+                        </li>
+                        <li >
+                            <a href="#">Azimuthal modes decomposition</a>
+                        </li>
+        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="menu"
+            id="menu_Use"
+            
+        >
+            <div id="menuButton_Use" class="menuButton"
+                 onmouseenter="prepareMenu('menu_Use')"
+                 onmousedown="event.preventDefault()"
+            >
+                <a href="use.html">
+                    <span>Use</span>
+                </a>
+            </div>
+            <div class="off" onmouseleave="leaveMenu('menu_Use',this)">
+                <div class="toctree-smilei">
+                    <ul>
+                        <li class="outer">
+                            <a href="installation.html">Install</a>
+                        </li>
+                        <li class="outer">
+                            <a href="namelist.html">Write a namelist</a>
+                        </li>
+                        <li class="outer">
+                            <a href="run.html">Run</a>
+                        </li>
+                        <li class="outer">
+                            <a href="post-processing.html">Post-process</a>
+                        </li>
+                        <li class="outer">
+                            <a href="contribute.html">Contribute</a>
+                        </li>
+        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="last menu"
+            id="menu_More"
+            
+        >
+            <div id="menuButton_More" class="menuButton"
+                 onmouseenter="prepareMenu('menu_More')"
+                 onmousedown="event.preventDefault()"
+            >
+                <a href="more.html">
+                    <span>More</span>
+                </a>
+            </div>
+            <div class="off" onmouseleave="leaveMenu('menu_More',this)">
+                <div class="toctree-smilei">
+                    <ul>
+                        <li class="outer">
+                            <a href="material.html">Publications</a>
+                        </li>
+                        <li class="outer">
+                            <a href="partners.html">Partners</a>
+                        </li>
+                        <li class="outer">
+                            <a href="https://smileipic.github.io/tutorials">Smilei tutorials</a>
+                        </li>
+        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <script type="text/javascript">
+            var es=document.getElementsByClassName("menuButton"), i=0;
+            var evt = "ontouchend" in document ? "touchend" : "click";
+            for( var i=0; i<es.length; i+=1 ) {
+                es[i].addEventListener(evt, function(a){ return function(){toggleMenu(a)};}(es[i].parentNode.id));
+            }
+        </script>
+        
+        <div id="searchbox" role="search" style="display:none">
+            <form class="search" action="search.html" method="get">
+              <input type="text" name="q" placeholder="Search" id="searchinput" />
+              <input type="hidden" name="check_keywords" value="yes" />
+              <input type="hidden" name="area" value="default" />
+            </form>
+        </div>
+        
+        <div id="searchicon" onclick="openSearch()" style="display:block">
+            <svg
+               xmlns="http://www.w3.org/2000/svg"
+               viewBox="0 0 80 120">
+              <g transform="translate(0,-932.36216)" >
+                <circle
+                   r="25" cy="977.51044" cx="38.078663"
+                   style="opacity:1;fill:none;stroke:#ffffff;stroke-width:10;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+                <rect
+                   transform="matrix(0.36717877,0.93015039,-0.93427297,0.35655858,0,0)"
+                   rx="4.9996676" ry="7.4995141"
+                   y="316.16959" x="947.6142"
+                   height="14.117695" width="46.476151"
+                   style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;" />
+                <path
+                   d="m 41.383282,962.25996 a 15,15 0 0 1 11.660107,11.6355"
+                   style="opacity:1;fill:none;stroke:#ffffff;stroke-width:3;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+              </g>
+            </svg>
+        </div>
+        <div id="closesearchicon" onclick="closeSearch()" style="display:none">
+            <svg
+               xmlns="http://www.w3.org/2000/svg"
+               viewBox="0 0 80 120">
+              <g
+                 transform="translate(0,-932.36216)">
+                <path
+                   d="m 10,962.36216 60,60.00004"
+                   style="fill:none;stroke:#ffffff;stroke-width:10;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none" />
+                <path
+                   d="M 70,962.36216 10,1022.3622"
+                   style="fill:none;stroke:#ffffff;stroke-width:10;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none" />
+              </g>
+            </svg>
+        </div>
+        
+        <div id="smallScreenMenuButton" onclick="toggleSmallScreenMenu(event)">
+            <svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg"
+               viewBox="-20 -20 140 140">
+              <g  style="fill:#ffffff;stroke:none;">
+                <circle cx="15" cy="20" r="5" />
+                <circle cx="35" cy="20" r="5" />
+                <circle cx="85" cy="20" r="5" />
+                <rect width="50" height="10" x="35" y="15" rx="0" ry="0" />
+                <circle cx="15" cy="40" r="5" />
+                <circle cx="35" cy="40" r="5" />
+                <circle cx="85" cy="40" r="5" />
+                <rect width="50" height="10" x="35" y="35" rx="0" ry="0" />
+                <circle cx="15" cy="60" r="5" />
+                <circle cx="35" cy="60" r="5" />
+                <circle cx="85" cy="60" r="5" />
+                <rect width="50" height="10" x="35" y="55" rx="0" ry="0" />
+                <circle cx="15" cy="80" r="5" />
+                <circle cx="35" cy="80" r="5" />
+                <circle cx="85" cy="80" r="5" />
+                <rect width="50" height="10" x="35" y="75" rx="0" ry="0" />
+              </g>
+            </svg>
+        </div>
+        
+    </div>
+    
+</div>
+</div>
+
+    <div class="document">
+    <div class="documentwrapper">
+        <div class="body" role="main">
+          
+  <div class="section" id="azimuthal-modes-decomposition">
+<h1>Azimuthal modes decomposition<a class="headerlink" href="#azimuthal-modes-decomposition" title="Permalink to this headline">¶</a></h1>
+<p><strong class="program">Smilei</strong> can run in <strong>cyclindrical geometry</strong> with
+a decomposition in azimuthal modes (<em>AM</em>), as described in
+<a class="reference external" href="doi.org/10.1016/j.jcp.2008.11.017">this article</a>.
+This requires a system with cylindrical symmetry or close to cylindrical symmetry
+(around the <cite>x</cite> axis in <strong class="program">Smilei</strong>).</p>
+<hr class="docutils" />
+<div class="section" id="mathematical-definition">
+<h2>Mathematical definition<a class="headerlink" href="#mathematical-definition" title="Permalink to this headline">¶</a></h2>
+<div class="figure align-default">
+<a class="reference internal image-reference" href="_images/Coordinate_Reference_AMcylindrical.png"><img alt="_images/Coordinate_Reference_AMcylindrical.png" src="_images/Coordinate_Reference_AMcylindrical.png" style="width: 13cm;" /></a>
+</div>
+<p>Any scalar field <span class="math notranslate nohighlight">\(F(x,r,\theta)\)</span> can be decomposed into a basis of
+azimuthal modes, or harmonics, defined as <span class="math notranslate nohighlight">\(\exp(-im\theta)\)</span>,
+where <span class="math notranslate nohighlight">\(m\)</span> is the number of the mode. Writing each Fourier coefficient
+as <span class="math notranslate nohighlight">\(\tilde{F}^{m}\)</span> leads to:</p>
+<div class="math notranslate nohighlight" id="equation-azimuthaldecomposition1">
+<span class="eqno">(61)<a class="headerlink" href="#equation-azimuthaldecomposition1" title="Permalink to this equation">¶</a></span>\[F\left(x,r,\theta\right) = \textrm{Re}\left[
+  \sum_{m=0}^{+\infty}\tilde{F}^{m}\left(x,r\right)\exp{\left(-im\theta\right)}
+\right],\]</div>
+<p>The mode <span class="math notranslate nohighlight">\(m=0\)</span> has cylindrical symmetry (no dependence
+on <span class="math notranslate nohighlight">\(\theta\)</span>). The following figure shows the real part
+of the first four azimuthal modes.</p>
+<div class="figure align-default" id="id2">
+<a class="reference internal image-reference" href="_images/AM_modes.png"><img alt="_images/AM_modes.png" src="_images/AM_modes.png" style="width: 15cm;" /></a>
+<p class="caption"><span class="caption-number">Fig. 57 </span><span class="caption-text">Real part of the first four pure azimuthal modes <span class="math notranslate nohighlight">\(exp(-im\theta)\)</span>
+on the <cite>yz</cite> plane.</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+<p>Eq. <a class="reference internal" href="#equation-azimuthaldecomposition1">(61)</a> can be expanded as:</p>
+<div class="math notranslate nohighlight" id="equation-azimuthaldecomposition2">
+<span class="eqno">(62)<a class="headerlink" href="#equation-azimuthaldecomposition2" title="Permalink to this equation">¶</a></span>\[F\left(x,r,\theta\right) =
+  \tilde{F}^{0}_{real}
+  + \tilde{F}^{1}_{real}\cos(\theta)
+  + \tilde{F}^{1}_{imag}\sin(\theta)
+  + \tilde{F}^{2}_{real}\cos(2\theta)
+  + \tilde{F}^{2}_{imag}\sin(2\theta) + ...\]</div>
+<p>The complex coefficients <span class="math notranslate nohighlight">\(\tilde{F}^{m}\)</span> can be calculated from <span class="math notranslate nohighlight">\(F\)</span>
+according to:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\tilde{F}^{m} &amp;=&amp; \frac{1}{\pi}\int_0^{2\pi} F\left(x,r,\theta\right)\exp{\left(-im\theta\right)}d\theta
+&amp; \quad\textrm{ for } m&gt;0 \\
+\tilde{F}^{0} &amp;=&amp; \frac{1}{2\pi}\int_0^{2\pi}F\left(x,r,\theta\right)d\theta.
+&amp; \textrm{ for } m=0\end{split}\]</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="decomposition-of-vector-fields">
+<h2>Decomposition of vector fields<a class="headerlink" href="#decomposition-of-vector-fields" title="Permalink to this headline">¶</a></h2>
+<p>Vector fields can also be decomposed in azimuthal modes through a
+decomposition of each of their components along the cylindrical
+coordinates <span class="math notranslate nohighlight">\((\mathbf{e_x},\mathbf{e_r},\mathbf{e_\theta})\)</span>.
+For example, the transverse field <span class="math notranslate nohighlight">\(\mathbf{E}_\perp\)</span> of a laser pulse
+polarized in the <span class="math notranslate nohighlight">\(y\)</span> direction with cylindrically symmetric envelope
+can be written as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\mathbf{E}_\perp(x,r,\theta, t) &amp;= E_y(x,r,\theta, t) \mathbf{e_y} \\
+  &amp;= E_r (x,r,\theta, t) \mathbf{e_r} + E_{\theta}(x,r,\theta, t) \mathbf{e_{\theta}}\\
+  &amp;= E_y(x,r,t) [\cos(\theta) \mathbf{e_r} - \sin(\theta) \mathbf{e_{\theta}}].\end{split}\]</div>
+<p>Thus, comparing to Eq <a class="reference internal" href="#equation-azimuthaldecomposition2">(62)</a>, we recognize
+a pure azimuthal mode of order <span class="math notranslate nohighlight">\(m=1\)</span> for both <span class="math notranslate nohighlight">\(E_r\)</span>
+and <span class="math notranslate nohighlight">\(E_\theta\)</span>, with the Fourier coefficients:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\begin{split}\tilde{E}^1_r (x,r,t) = E_y(x,r,t),\\\end{split}\\\tilde{E}^1_{\theta} (x,r,t) = -iE_y(x,r,t).\end{aligned}\end{align} \]</div>
+<p>Similarly, an elliptically (or cylindrically) polarized laser
+is described by a pure mode <span class="math notranslate nohighlight">\(m=1\)</span>, as it can be seen as the linear
+superposition of two linearly polarized lasers. A difference in phase or in the polarization direction simply
+corresponds to a multiplication of the Fourier coefficients by a complex exponential.</p>
+<p>The AM decomposition is most suited for
+physical phenomena close to cylindrical symmetry as a low number
+of modes is sufficient.
+For example, in a basic Laser Wakefield Acceleration setup,
+a linearly-polarized laser pulse with cylindrically symmetric envelope may be
+described only by the mode <span class="math notranslate nohighlight">\(m=1\)</span>.
+As the wakefield wave is mainly determined by the cylindrically symmetric
+ponderomotive force, it can be described by the mode <span class="math notranslate nohighlight">\(m=0\)</span>.
+Thus, such a simulation only needs, in principle, two azimuthal modes.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="maxwell-s-equations-in-cylindrical-geometry">
+<h2>Maxwell’s equations in cylindrical geometry<a class="headerlink" href="#maxwell-s-equations-in-cylindrical-geometry" title="Permalink to this headline">¶</a></h2>
+<p>In an AM simulation, the <span class="math notranslate nohighlight">\(\tilde{F}^{m}(x,r)\)</span> are stored and computed
+for each scalar field and for each component of the vector fields.
+Each of them is a <span class="math notranslate nohighlight">\((x,r)\)</span> grid of complex values.</p>
+<p>From the linearity of Maxwell’s Equations, and assuming that the densities
+and currents can also be decomposed in modes, we obtain the following
+evolution of the mode <span class="math notranslate nohighlight">\(m\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-maxwelleqsazimuthalmodes">
+<span class="eqno">(63)<a class="headerlink" href="#equation-maxwelleqsazimuthalmodes" title="Permalink to this equation">¶</a></span>\[\begin{split}\partial_t \tilde{B}^m_{x} &amp;=-\frac{1}{r}\partial_r(r\tilde{E}^m_{\theta})-\frac{im}{r}\tilde{E}^m_r,\\
+\partial_t \tilde{B}^m_r &amp;= \frac{im}{r}\tilde{E}^m_x+\partial_x \tilde{E}^m_{\theta},\\
+\partial_t \tilde{B}^m_{\theta} &amp;=-\partial_x \tilde{E}^m_{r} + \partial_r \tilde{E}^m_{x},\\
+\partial_t \tilde{E}^m_{x} &amp;=\frac{1}{r}\partial_r(r\tilde{B}^m_{\theta})+\frac{im}{r}\tilde{B}^m_r-\tilde{J}^m_{x},\\
+\partial_t \tilde{E}^m_r &amp;= -\frac{im}{r}\tilde{B}^m_x-\partial_x \tilde{B}^m_{\theta}-\tilde{J}^m_{r},\\
+\partial_t \tilde{E}^m_{\theta} &amp;=\partial_x \tilde{B}^m_{r} - \partial_r \tilde{B}^m_{x}-\tilde{J}^m_{\theta}.\end{split}\]</div>
+<p>Thus, even in presence of a plasma, at each timestep,
+these equations are solved independently.
+The coupling between the modes occurs when the total electromagnetic fields
+push the macro-particles, creating, in turn, the currents <span class="math notranslate nohighlight">\(\tilde{J}^m\)</span>
+of their current density.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="interaction-with-the-macro-particles">
+<h2>Interaction with the macro-particles<a class="headerlink" href="#interaction-with-the-macro-particles" title="Permalink to this headline">¶</a></h2>
+<p>The azimuthal decomposition concerns only the grid quantities
+(EM fields and current densities), which are thus defined on a 2D grid,
+but macro-particles evolve in a full three-dimensional
+space with cartesian coordinates.</p>
+<div class="figure align-default" id="id3">
+<a class="reference internal image-reference" href="_images/AM_grid_particles.jpg"><img alt="_images/AM_grid_particles.jpg" src="_images/AM_grid_particles.jpg" style="width: 10cm;" /></a>
+<p class="caption"><span class="caption-number">Fig. 58 </span><span class="caption-text">Blue arrows: the <cite>x</cite> and <cite>r</cite> axes of the 2D grid (red)
+where the electromagnetic fields are defined.
+Macro-particle positions and momenta are defined in 3D.</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
+<p>During each iteration, the macro-particles are pushed in phase space
+using reconstructed 3D cartesian electromagnetic fields
+at their position <span class="math notranslate nohighlight">\((x,r,\theta)\)</span> (see Eq. <a class="reference internal" href="#equation-azimuthaldecomposition1">(61)</a>).
+Then, their contribution to the current densities <span class="math notranslate nohighlight">\((J_x,J_r,J_{\theta})\)</span>
+is computed to update the electromagnetic fields at the next iteration
+(see Eqs <a class="reference internal" href="#equation-maxwelleqsazimuthalmodes">(63)</a>).</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="tips">
+<h2>Tips<a class="headerlink" href="#tips" title="Permalink to this headline">¶</a></h2>
+<p>Note that each mode <span class="math notranslate nohighlight">\(\tilde{F}^{m}\)</span> is a function of <span class="math notranslate nohighlight">\(x\)</span>,
+the longitudinal coordinate and <span class="math notranslate nohighlight">\(r\)</span>, the radial coordinate.
+Therefore, each of them is only two dimensional. Thus, the computational cost
+of AM simulations scales approximately as 2D simulations multiplied by the
+number of modes. However, a higher number of macro-particles might be necessary
+to obtain convergence of the results (always check the convergence of your
+results by increasing the number of macro-particles and modes).
+A rule of thumb is to use at least 4 times the number of modes as
+macro-particles along <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="conventions-for-the-namelist">
+<h2>Conventions for the namelist<a class="headerlink" href="#conventions-for-the-namelist" title="Permalink to this headline">¶</a></h2>
+<p>Several differences appear in the notations and definitions between
+the AM and 3D geometries:</p>
+<ul class="simple">
+<li><p>The origin of the coordinates is on the axis of the cylinder
+(see figure below).</p></li>
+</ul>
+<div class="figure align-default" id="id4">
+<img alt="_images/AMcylindrical_vs_cartesian.png" src="_images/AMcylindrical_vs_cartesian.png" />
+<p class="caption"><span class="caption-number">Fig. 59 </span><span class="caption-text">Origin of coordinates in AM cylindrical and 3D cartesian.</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</div>
+<ul class="simple">
+<li><p>The AM radial grid size (<code class="docutils literal notranslate"><span class="pre">grid_length[1]</span></code>) represents the radius
+of the cylinder; not its diameter. Thus, it is half the size of
+the 3D transverse grid.</p></li>
+<li><p>Particles are defined 3D space, so their coordinates should be
+provided in terms of <em>x</em>, <em>y</em>, <em>z</em> if needed (e.g. a <cite>Species</cite>
+initialized with a numpy array).
+However, the density profiles of particles are assimilated to
+scalar fields defined on the <span class="math notranslate nohighlight">\((x,r)\)</span> grid.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Field</span></code> diagnostics really correspond to the complex fields
+of each mode on <span class="math notranslate nohighlight">\((x,r)\)</span> grids. However, <code class="docutils literal notranslate"><span class="pre">Probes</span></code>
+diagnostics are defined in 3D space just like the particles:
+all fields are interpolated at their 3D positions, and reconstructed
+by summing over the modes.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ExternalFields</span></code> are grid quantities in <span class="math notranslate nohighlight">\((x,r)\)</span> coordinates.
+One must be defined for each mode.</p></li>
+</ul>
+</div>
+<hr class="docutils" />
+<div class="section" id="classical-and-relativistic-poisson-s-equation">
+<h2>Classical and relativistic Poisson’s equation<a class="headerlink" href="#classical-and-relativistic-poisson-s-equation" title="Permalink to this headline">¶</a></h2>
+<p>Given the linearity of the relativistic Poisson’s equation
+described in <a class="reference internal" href="relativistic_fields_initialization.html"><span class="doc">Field initialization for relativistic species</span></a>,
+it can be decomposed in azimuthal modes
+with the corresponding mode of the charge density
+<span class="math notranslate nohighlight">\(-\tilde{\rho}^m\)</span> as source term.
+For the mode <em>m</em> of the potential <span class="math notranslate nohighlight">\(\Phi\)</span>,
+it writes:</p>
+<div class="math notranslate nohighlight" id="equation-relpoissonmodes">
+<span class="eqno">(64)<a class="headerlink" href="#equation-relpoissonmodes" title="Permalink to this equation">¶</a></span>\[\left[
+  \frac{1}{\gamma^2_0}\partial^2_x\tilde{\Phi}^m
+  +\frac{1}{r}\partial_r\left(r\partial_r\tilde{\Phi}^m\right)
+  -\frac{m^2}{r^2}\tilde{\Phi}^m
+\right] = -\tilde{\rho}^m.\]</div>
+<p>By solving each of these relativistic Poisson’s equations
+we initialize the azimuthal components of the electromagnetic fields:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{eqnarray}
+\tilde{E}^m_x &amp;=&amp; -\frac{1}{\gamma_0^2}\partial_x \tilde{\Phi}^m,\\
+\tilde{E}^m_r &amp;=&amp; -\partial_r \tilde{\Phi}^m, \\
+\tilde{E}^m_{\theta} &amp;=&amp; \frac{im}{r} \tilde{\Phi}^m, \\
+\tilde{\mathbf{B}}^m &amp;=&amp; \beta_0\mathbf{\hat{x}}\times\tilde{\mathbf{E}}^m.
+\end{eqnarray}\end{split}\]</div>
+<p>The initialization of the electric field with the non-relativistic
+Poisson’s equation is performed similarly, and the underlying equations simply
+reduce to the previous equations, with <span class="math notranslate nohighlight">\(\gamma_0 = 1\)</span> and
+<span class="math notranslate nohighlight">\(\beta_0 = 0\)</span> (i.e. an immobile Species).</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="the-envelope-model-in-cylindrical-coordinates">
+<h2>The envelope model in cylindrical coordinates<a class="headerlink" href="#the-envelope-model-in-cylindrical-coordinates" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference internal" href="laser_envelope.html"><span class="doc">Laser envelope model</span></a> for cartesian geometries has been
+implemented also in cylindrical geometry, as described in <a class="reference internal" href="material.html#massimo2020" id="id1"><span>[Massimo2020]</span></a>.</p>
+<p>Only the mode <span class="math notranslate nohighlight">\(m=0\)</span> is available for the envelope
+in the present implementation, i.e. the electromagnetic and
+envelope fields have perfect cylindrical symmetry with respect
+to the envelope propagation axis <span class="math notranslate nohighlight">\(x\)</span>.</p>
+<p>The main difference compared to the cartesian geometry lies in the envelope
+equation (see Eq. <a class="reference internal" href="laser_envelope.html#equation-envelope-equation">(53)</a>). The assumption of cylindrical
+symmetry removes derivatives with respect <span class="math notranslate nohighlight">\(\theta\)</span>, leading to:</p>
+<div class="math notranslate nohighlight" id="equation-envelope-equation-am">
+<span class="eqno">(65)<a class="headerlink" href="#equation-envelope-equation-am" title="Permalink to this equation">¶</a></span>\[\partial^2_x\tilde{A}
++\frac{1}{r}\partial_r(r\partial_r\tilde{A})
++2i\left(\partial_x \tilde{A} + \partial_t \tilde{A}\right)
+-\partial^2_t\tilde{A}
+=   \chi \tilde{A}.\]</div>
+<p>The envelope approximation coupled to the cylindrical symmetry
+can greatly speed-up the simulation: compared to a 3D envelope simulation
+with the same number of particles, it has a speed-up which scales linearly
+as twice the transverse number of cells.
+This speed-up can reach 100 for lasers with transverse sizes of the order
+of tens of microns. Compared to a standard 3D laser simulation with the
+same number of particles, the speed-up of a cylindrical envelope simulation
+can reach 1000 for lasers of durations of the order of tens of femtoseconds.
+These comparisons assume the same longitudinal window size and the same
+transverse size for the simulated physical space.</p>
+</div>
+</div>
+
+
+        </div></div>
+    </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      <div>
+      <a href="site.html">Site index</a>
+      </div>
+      <div>
+        Last updated on Feb 07, 2020
+      </div>
+      
+      <div>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      </div>
+      
+    </div>
+    
+    <script type="text/javascript">
+        
+        var nav = document.getElementById("nav");
+        var nav_list = document.getElementById("nav_list");
+        var nav_button = document.getElementById("nav_button");
+        var smallScreenMenu = document.getElementById("smallScreenMenu");
+        var smallScreenMenuButton = document.getElementById("smallScreenMenuButton");
+        var searchicon = document.getElementById("searchicon");
+        var searchbox  = document.getElementById("searchbox");
+        var searchinput= document.getElementById("searchinput");
+        var menus = document.getElementsByClassName("menu");
+        for( var i=0; i<menus.length; i++ )
+            menus[i].active = false;
+        
+        
+        var ul = nav_list.getElementsByTagName("ul")[0], li;
+        var keep_nav = false;
+        if( ul ) {
+            li = ul.firstElementChild;
+            if( li ) {
+                if( li.getElementsByTagName("ul").length > 0 ) keep_nav = true;
+            }
+        }
+        if( keep_nav ) {
+            li.removeChild( li.firstElementChild );
+        } else {
+            document.getElementById("nav_positioner").removeChild( document.getElementById("nav") );
+        }
+        
+        function navOff() {
+            nav_list.style.display = "none";
+            nav_button.className = "";
+            nav.style.overflowY = "visible";
+        }
+        
+        function toggleNav() {
+            for( var i=0; i<menus.length; i++ )
+                menuOff( menus[i] );
+            if( nav_list.style.display != "inline-block" ) {
+                nav_list.style.display = "inline-block";
+                nav_button.className = "pushed";
+                nav.style.overflowY = "auto";
+            } else {
+                navOff();
+            }
+        }
+        
+        function toggleSmallScreenMenu(e) {
+            e.preventDefault();
+            if( smallScreenMenu.className != "on" ) {
+                smallScreenMenu.className = "on";
+                smallScreenMenuButton.className = "pushed";
+            } else {
+                smallScreenMenu.className = "off";
+                smallScreenMenuButton.className = "";
+            }
+        }
+        
+        function prepareMenu(menu_id) {
+            var menu = document.getElementById(menu_id);
+            menu.timer1 = setTimeout(function(a){ return function(){thisMenuOnly(a)};}(menu_id), 100);
+            menu.addEventListener("mouseleave", function(a){ return function(){clearTimeout(a.timer1)};}(menu) );
+        }
+        
+        function leaveMenu(menu_id, source) {
+            var menu = document.getElementById(menu_id);
+            menu.timer2 = setTimeout(function(a){ return function(){menuOff(a)};}(menu), 1000);
+            source.addEventListener("mouseenter", function(a){ return function(){clearTimeout(a.timer2)};}(menu) );
+        }
+        
+        function menuOn( menu ) {
+            var divs = menu.getElementsByTagName("div");
+            if(nav_list) navOff();
+            divs[1].className = "on";
+            divs[0].className = "menuButton pushed";
+            menu.active = true;
+        }
+        function menuOff( menu ) {
+            var divs = menu.getElementsByTagName("div");
+            divs[1].className = "off";
+            divs[0].className = "menuButton";
+            menu.active = false;
+        }
+        
+        function thisMenuOnly(menu_id) {
+            var menu = document.getElementById(menu_id);
+            for( var i=0; i<menus.length; i++ )
+                if( i!=menu_id )
+                    menuOff( menus[i] );
+            menuOn( menu );
+        }
+        
+        function toggleMenu(menu_id) {
+            var menu = document.getElementById(menu_id);
+            if( menu.active ) {
+                menuOff( menu );
+            } else {
+                for( var i=0; i<menus.length; i++ )
+                    if( i!=menu_id )
+                        menuOff( menus[i] );
+                menuOn( menu );
+            }
+        }
+        
+        function openSearch() {
+            for( var i=0; i<menus.length; i++ ) {
+                menuOff( menus[i] );
+                menus[i].style.zIndex = "-1";
+            }
+            searchicon.style.display = "none";
+            closesearchicon.style.display = "block";
+            searchbox.style.display = "block";
+            searchinput.focus();
+        }
+        
+        function closeSearch() {
+            searchicon.style.display = "block";
+            closesearchicon.style.display = "none";
+            searchbox .style.display = "none";
+            for( var i=0; i<menus.length; i++ )
+                menus[i].style.zIndex = "0";
+        }
+        
+        
+        var documentDiv = document.getElementsByClassName("document")[0];
+        documentDiv.addEventListener('click', function (event) {
+            if(nav_list) navOff();
+            for( var i=0; i<menus.length; i++ )
+                menuOff( menus[i] );
+        });
+    </script>
+  </body>
+</html>
